@@ -9,15 +9,15 @@ you should have everything you need in terms of files to run
 
 your directory should look like this
 
-|->prototype_wsservcli \n
-|-->node_modules(npm puts its stuff in here once you npm install)
-|-->package-lock.json
-|-->package.json
-|-->server.js
-|-->public
-|--->index.html
-|--->script.js
-|--->styles.css
+|->prototype_wsservcli <br/>
+|-->node_modules(npm puts its stuff in here once you npm install) <br/>
+|-->package-lock.json <br/>
+|-->package.json <br/>
+|-->server.js <br/>
+|-->public <br/>
+|--->index.html <br/>
+|--->script.js <br/>
+|--->styles.css <br/>
 
 make sure you have node.js installed
 
