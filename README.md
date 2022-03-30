@@ -1,13 +1,13 @@
 # prototype_wsservcli
 simple chat using node.js and websockets from ws and wss 
 
-to run git clone the repo (this will get all server side stuff)
-
-to get client side, create a folder within the expressserver directory called "public" and but the files in the master branch into it
+to run git clone the repo
 
 you should have everything you need in terms of files to run
 
-your directory should look like this
+just cd into the prototype_wsservcli and do 'npm install' - this should install npm packages from your list of dependencies in the package.json file
+
+your directory should look like this after (probably in a different order)
 
 |->prototype_wsservcli <br/>
 |-->node_modules(npm puts its stuff in here once you npm install) <br/>
@@ -21,8 +21,6 @@ your directory should look like this
 
 make sure you have node.js installed
 
-then 'npm install' in the prototype_wsservcli directory
-
-start the server with the command node server.js
+then start the server with the command node server.js
 
 navigate to localhost:3000 (default) to see the webpage locally
