@@ -21,7 +21,7 @@ your directory should look like this
 
 make sure you have node.js installed
 
-then 'npm install' in the prototype_wsservcli
+then 'npm install' in the prototype_wsservcli directory
 
 start the server with the command node server.js
 
