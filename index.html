@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="script.js"></script>
+  <title>WebSocket</title>
+</head>
+<body>
+  <h1>Cole's WebSocket Simple Messager</h1>
+  <div>
+    <h3>Connected To Server: <span id="connection">False</h3></span>
+    <input type="button" id="connectButton" value="Connect"><br>
+    <br>
+    Create New Chat Room: <span id="createRoom"><input type="button" id="createChat" value="Create Chat"></span><br><br>
+    Connect To Existing Chat With ID: <input type="text" id="chatID"><br>
+  </div>
+  <br>
+  <div>Outgoing Message: <input type="text" id="outgoing"><br></div>
+  <br>
+  <div>Messages: <span id="incoming"></span><br></div>
+</body>
+</html>
