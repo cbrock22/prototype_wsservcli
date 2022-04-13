@@ -7,17 +7,23 @@
   <title>WebSocket</title>
 </head>
 <body>
-  <h1>Cole's WebSocket Simple Messager</h1>
+  <h1>Cole's WebSocket Simple Messenger</h1>
   <div>
+    <input type="button" id="connectButton" value="Connect">
     <h3>Connected To Server: <span id="connection">False</h3></span>
-    <input type="button" id="connectButton" value="Connect"><br>
-    <br>
+    
+      
+        <br>
+          Enter your username for this session: <input type="text" id="username">
+        <br>
+      <br>
     Create New Chat Room: <span id="createRoom"><input type="button" id="createChat" value="Create Chat"></span><br><br>
     Connect To Existing Chat With ID: <input type="text" id="chatID"><br>
   </div>
   <br>
   <div>Outgoing Message: <input type="text" id="outgoing"><br></div>
   <br>
+  <save href="" id="saveButton">Click here to download the chat.  </save><button onclick="saveChat()" download>Create File</button>
   <div>Messages: <span id="incoming"></span><br></div>
 </body>
 </html>

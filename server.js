@@ -9,6 +9,13 @@ var chatRooms = new Array;
 var chatid = 0;
 // serve static files from /public:
 server.use('/', express.static('public'));
+
+class message{
+  constructor(t){
+    this.text = t;
+  }
+}
+
 class chatRoom{
   constructor(socket){
     chatid+=1;
@@ -16,16 +23,25 @@ class chatRoom{
     var tempusers = new Array;
     tempusers.push(socket);
     this.users = tempusers;
-    
+    this.usernamehistory = new Array;
+    this.history = new Array;
   }
   addClient(socket){
     this.users.push(socket);
   }
   removeClient(socket){
-    var pos = users.indexOf(socket);
-    users.splice(pos, 1);
+    var pos = this.users.indexOf(socket);
+    this.users.splice(pos, 1);
+  }
+  addMessage(m){
+    var tempmessage = new message(m);
+    this.history.push(tempmessage.text);
   }
 }
+
+
+
+
 // this runs after the server successfully starts:
 function serverStart() {
   var port = this.address().port;
@@ -38,11 +54,35 @@ function handleClient(thisClient, request) {
 
   function endClient() {
     var position = clients.indexOf(thisClient);
+    for(c in chatRooms){
+      if(chatRooms[c].users.includes(thisClient)){
+        console.log(chatRooms[c].history);
+        chatRooms[c].removeClient(thisClient);
+      }
+      if(chatRooms[c].users.length == 0){ //if a chat room has no users in it --> save the chat history as a txt file
+        console.log("hit log function");
+        logExtinctChat(chatRooms[c]);
+        chatRooms.splice(c,1); //remove the chat room from the array of active chat rooms -- to avoid writing the file twice
+
+      }
+    }
     clients.splice(position, 1);
     console.log("connection closed");
   }
 
+  function logUserName(data){
+    var unarr = data.split(':');
+    var name = unarr[0];
+    for(c in chatRooms){
+      if(chatRooms[c].users.includes(thisClient)){
+        if(!chatRooms[c].usernamehistory.includes(name))
+          chatRooms[c].usernamehistory.push(name);
+      }
+    }
+  }
+
   function clientResponse(data) {
+    logUserName(data)
     if(data.substring(0,13) == 'connecttochat'){
       connectToChat(data.substring(data.length-1));
     }
@@ -51,9 +91,36 @@ function handleClient(thisClient, request) {
     }
     else if (data != 'createchat' && data.substring(0,13) != 'connecttochat'){
       //console.log('fell into else if')
+      
       broadcast(data, thisClient);}
+  }
+
+  function logExtinctChat(cr){
+    var folderName = "C:/Users/coleb/Desktop/mywebsocket/ExpressWsServer/logs/";
+    var now = new Date();
+    var logfile_name = now.getFullYear() + "-"+ now.getMonth() + "-" + now.getDate();
+    var f = (folderName + logfile_name);
+    var logfiletime = now.getHours() + "-" + now.getMinutes() + "-" + now.getSeconds() + "-chatid-" + cr.id;
+    const fs = require("fs");
+    if(!fs.existsSync(f)) fs.mkdirSync(f, { recursive: true})
+      const file = fs.createWriteStream(folderName + logfile_name + '/' + logfiletime +'.txt');
+
+      file.on('error', (err)=> {
+        console.log(err);
+      });
+      file.write("User Participation in Chat Room " + cr.id + " : ");
+      cr.usernamehistory.forEach((u) => {
+        file.write(u + ', ')
+      });
+      file.write('\n');
+      cr.history.forEach((v) => {
+        file.write(v + '\n');
+      });
     
     
+    
+    
+    file.end();
     
   }
 
@@ -76,10 +143,11 @@ function handleClient(thisClient, request) {
   }
 
   function broadcast(data, thisClient) {
-    console.log(chatRooms.length);
+    //console.log(chatRooms.length);
     if(chatRooms.length > 0){
       for (let c in chatRooms) {
         if(chatRooms[c].users.includes(thisClient)){
+          chatRooms[c].addMessage(data);
           for(let u in chatRooms[c].users){
             if(chatRooms[c].users[u] != thisClient){
               chatRooms[c].users[u].send(data);
